@@ -10,4 +10,8 @@ const main = () => {
   if (!gl) {
     alert("Your browser does not support WebGL");
   }
+
+  gl.clearColor(1.0, 0.65, 0.0, 1);
+
+  gl.clear(gl.COLOR_BUFFER_BIT);
 };
