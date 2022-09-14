@@ -53,12 +53,22 @@ const createProgram = (gl, vertexShader, fragmentShader) => {
   gl.deleteProgram(program);
 };
 
+// create buffer
+createBuffer(gl, [
+  0.0, 0.0,
+  0.0, 0.5,
+  0.7, 0.0,
+  0.7, 0.5,
+  0.7, 0.0,
+  0.0, 0.5,
+
+]);
+
 // create vertex shader source
 const vertexShaderSource = `
   attribute vec2 aPosition;
   void main() 
   {
-    gl_PointSize = 10.0;
     gl_Position = vec4(aPosition, 0.0, 1.0);
   }
 `;
@@ -82,3 +92,17 @@ const fragmentShader = createShader(
 
 // create program
 const program = createProgram(gl, vertexShader, fragmentShader);
+
+gl.useProgram(program);
+
+// get attribute location
+const aPosition = gl.getAttribLocation(program, "aPosition");
+
+// enable attribute
+gl.enableVertexAttribArray(aPosition);
+
+// pointer attribute
+gl.vertexAttribPointer(aPosition, 2, gl.FLOAT, false, 0, 0);
+
+// draw
+gl.drawArrays(gl.TRIANGLES, 0, 6);
