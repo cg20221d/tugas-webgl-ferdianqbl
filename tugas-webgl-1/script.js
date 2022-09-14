@@ -14,6 +14,15 @@ if (!gl) {
 gl.clearColor(225.0, 225.0, 225.0, 1.0);
 gl.clear(gl.COLOR_BUFFER_BIT);
 
+// create buffer function
+const createBuffer = (gl, data) => {
+  let buffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.STATIC_DRAW);
+
+  return buffer;
+};
+
 // create vertex shader and fragment shader function
 const createShader = (gl, typeShader, sourceShader) => {
   let shader = gl.createShader(typeShader);
@@ -43,3 +52,33 @@ const createProgram = (gl, vertexShader, fragmentShader) => {
   console.log(gl.getProgramInfoLog(program));
   gl.deleteProgram(program);
 };
+
+// create vertex shader source
+const vertexShaderSource = `
+  attribute vec2 aPosition;
+  void main() 
+  {
+    gl_PointSize = 10.0;
+    gl_Position = vec4(aPosition, 0.0, 1.0);
+  }
+`;
+
+// create fragment shader source
+const fragmentShaderSource = `
+  precision mediump float;
+  void main()
+  {
+    gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+  }
+`;
+
+// create vertex shader and fragment shader
+const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+const fragmentShader = createShader(
+  gl,
+  gl.FRAGMENT_SHADER,
+  fragmentShaderSource
+);
+
+// create program
+const program = createProgram(gl, vertexShader, fragmentShader);
