@@ -54,21 +54,26 @@ const createProgram = (gl, vertexShader, fragmentShader) => {
 };
 
 // create buffer
-createBuffer(gl, [
-  0.0, 0.0,
-  0.0, 0.5,
-  0.7, 0.0,
+let vertices = [
+  0.0, 0.0, 1.0, 1.0, 0, 0,
+  0.0, 0.5, 0.7, 0.0, 1.0,
+  0.7, 0.0, 0.1, 1.0, 0.6,
   0.7, 0.5,
   0.7, 0.0,
-  0.0, 0.5,
+  0.0, 0.5
+];
 
-]);
+createBuffer(gl, vertices);
 
 // create vertex shader source
 const vertexShaderSource = `
   attribute vec2 aPosition;
+  attribute vec3 aColor;
+
+  varying vec3 vColor;
   void main() 
   {
+    vColor = aColor;
     gl_Position = vec4(aPosition, 0.0, 1.0);
   }
 `;
@@ -76,9 +81,11 @@ const vertexShaderSource = `
 // create fragment shader source
 const fragmentShaderSource = `
   precision mediump float;
+
+  varying vec3 vColor;
   void main()
   {
-    gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+    gl_FragColor = vec4(vColor, 1.0);
   }
 `;
 
@@ -97,12 +104,15 @@ gl.useProgram(program);
 
 // get attribute location
 const aPosition = gl.getAttribLocation(program, "aPosition");
+const aColor = gl.getAttribLocation(program, "aColor");
 
 // enable attribute
 gl.enableVertexAttribArray(aPosition);
+gl.enableVertexAttribArray(aColor);
 
 // pointer attribute
 gl.vertexAttribPointer(aPosition, 2, gl.FLOAT, false, 0, 0);
+gl.vertexAttribPointer(aColor, 3, gl.FLOAT, false, 0, 0);
 
 // draw
 gl.drawArrays(gl.TRIANGLES, 0, 6);
