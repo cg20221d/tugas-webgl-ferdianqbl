@@ -10,70 +10,21 @@ if (!gl) {
   alert("Your browser does not support WebGL");
 }
 
+// resize canvas
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
 // Clear the canvas
 gl.clearColor(225.0, 225.0, 225.0, 1.0);
 gl.clear(gl.COLOR_BUFFER_BIT);
 
-// create buffer function
-const createBuffer = (gl, data) => {
-  let buffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.STATIC_DRAW);
-
-  return buffer;
-};
-
-// create vertex shader and fragment shader function
-const createShader = (gl, typeShader, sourceShader) => {
-  let shader = gl.createShader(typeShader);
-  gl.shaderSource(shader, sourceShader);
-  gl.compileShader(shader);
-
-  let success = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
-
-  if (success) return shader;
-
-  console.log(gl.getShaderInfoLog(shader));
-  gl.deleteShader(shader);
-};
-
-// create program function
-const createProgram = (gl, vertexShader, fragmentShader) => {
-  let program = gl.createProgram();
-
-  gl.attachShader(program, vertexShader);
-  gl.attachShader(program, fragmentShader);
-  gl.linkProgram(program);
-
-  let success = gl.getProgramParameter(program, gl.LINK_STATUS);
-
-  if (success) return program;
-
-  console.log(gl.getProgramInfoLog(program));
-  gl.deleteProgram(program);
-};
-
-// create buffer
-let vertices = [
-  0.0, 0.0, 1.0, 1.0, 0, 0,
-  0.0, 0.5, 0.7, 0.0, 1.0,
-  0.7, 0.0, 0.1, 1.0, 0.6,
-  0.7, 0.5,
-  0.7, 0.0,
-  0.0, 0.5
-];
-
-createBuffer(gl, vertices);
-
 // create vertex shader source
 const vertexShaderSource = `
   attribute vec2 aPosition;
-  attribute vec3 aColor;
-
-  varying vec3 vColor;
   void main() 
   {
-    vColor = aColor;
+    gl_PointSize = 5.0;
     gl_Position = vec4(aPosition, 0.0, 1.0);
   }
 `;
@@ -81,11 +32,9 @@ const vertexShaderSource = `
 // create fragment shader source
 const fragmentShaderSource = `
   precision mediump float;
-
-  varying vec3 vColor;
   void main()
   {
-    gl_FragColor = vec4(vColor, 1.0);
+    gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0);
   }
 `;
 
@@ -102,17 +51,24 @@ const program = createProgram(gl, vertexShader, fragmentShader);
 
 gl.useProgram(program);
 
-// get attribute location
-const aPosition = gl.getAttribLocation(program, "aPosition");
-const aColor = gl.getAttribLocation(program, "aColor");
 
-// enable attribute
-gl.enableVertexAttribArray(aPosition);
-gl.enableVertexAttribArray(aColor);
+// ========= DRAW ========
 
-// pointer attribute
-gl.vertexAttribPointer(aPosition, 2, gl.FLOAT, false, 0, 0);
-gl.vertexAttribPointer(aColor, 3, gl.FLOAT, false, 0, 0);
+// create buffer
+let vertices = [
+  0.0, 0.0
+];
+
+var pointsVertices = [-0.5, -0.5];
+var linesVertices = [
+  -0.25, -0.25, -0.5, +0.5
+];
+var triangleVertices = [
+  +0.5, -0.5, 0.0, 0.25, +0.5, 0.0
+];
 
 // draw
-gl.drawArrays(gl.TRIANGLES, 0, 6);
+drawShape(gl, gl.TRIANGLES, triangleVertices);
+drawShape(gl, gl.LINES, linesVertices);
+drawShape(gl, gl.POINTS, pointsVertices);
+drawShape(gl, gl.POINTS, vertices);
