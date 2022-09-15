@@ -53,22 +53,21 @@ gl.useProgram(program);
 
 
 // ========= DRAW ========
+var LVertices = [
+  0.0, 0.0,
+  0.03, 0.0,
+  0.0, 0.4,
+  0.03, 0.0,
+  0.0, 0.4,
+  0.03, 0.4,
+  0.0, 0.0,
+  0.0, 0.05,
+  0.15, 0.05,
+  0.15, 0.05,
+  0.0, 0.0,
+  0.15, 0.0,
 
-// create buffer
-let vertices = [
-  0.0, 0.0
-];
-
-var pointsVertices = [-0.5, -0.5];
-var linesVertices = [
-  -0.25, -0.25, -0.5, +0.5
-];
-var triangleVertices = [
-  +0.5, -0.5, 0.0, 0.25, +0.5, 0.0
 ];
 
 // draw
-drawShape(gl, gl.TRIANGLES, triangleVertices);
-drawShape(gl, gl.LINES, linesVertices);
-drawShape(gl, gl.POINTS, pointsVertices);
-drawShape(gl, gl.POINTS, vertices);
+drawShape(gl, gl.TRIANGLES, LVertices);
