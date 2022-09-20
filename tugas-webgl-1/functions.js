@@ -12,12 +12,15 @@ const createBuffer = (gl, data) => {
 
   // get attribute location
   const aPosition = gl.getAttribLocation(program, "aPosition");
+  const aColor = gl.getAttribLocation(program, "aColor");
 
   // enable attribute
   gl.enableVertexAttribArray(aPosition);
+  gl.enableVertexAttribArray(aColor);
 
   // pointer attribute
   gl.vertexAttribPointer(aPosition, 2, gl.FLOAT, false, 0, 0);
+  gl.vertexAttribPointer(aColor, 2, gl.FLOAT, false, 0, 0);
 };
 
 // create vertex shader and fragment shader function

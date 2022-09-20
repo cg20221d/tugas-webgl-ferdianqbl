@@ -22,8 +22,12 @@ gl.clear(gl.COLOR_BUFFER_BIT);
 // create vertex shader source
 const vertexShaderSource = `
   attribute vec2 aPosition;
+  attribute vec3 aColor;
+
+  varying vec3 vColor;
   void main() 
   {
+    vColor = aColor;
     gl_PointSize = 5.0;
     gl_Position = vec4(aPosition, 0.0, 1.0);
   }
@@ -32,9 +36,11 @@ const vertexShaderSource = `
 // create fragment shader source
 const fragmentShaderSource = `
   precision mediump float;
+
+  varying vec3 vColor;
   void main()
   {
-    gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0);
+    gl_FragColor = vec4(vColor, 1.0);
   }
 `;
 
@@ -93,10 +99,13 @@ let AVertices = [
 
 // draw
 // 2
+
+
 drawShape(gl, gl.LINES, [-0.5, 0.5, -0.7, 0.5]);
 drawShape(gl, gl.LINES, [-0.5, 0.3, -0.5, 0.5]); // |
-// drawShape(gl, gl.LINES, [-0.7, 0.0, -0.7, 0.3]); // |
-drawShape(gl, gl.LINES, [-0.5, 0.3, -0.7, 0.3]);
+drawShape(gl, gl.LINES, [-0.5, 0.3, -0.677, 0.3]);
+drawShape(gl, gl.LINES, [-0.677, 0.06, -0.677, 0.3]); // |
+drawShape(gl, gl.LINES, [-0.5, 0.06, -0.677, 0.06]);
 
 // 2 kecil
 drawShape(gl, gl.LINES, [-0.53, 0.45, -0.7, 0.45]);
@@ -127,4 +136,7 @@ drawShape(gl, gl.POINT, [-0.325, 0.1 + 0.15]); // titik tengah atas
 // A
 drawShape(gl, gl.TRIANGLES, AVertices);
 // L
+drawShape(gl, gl.TRIANGLES, LVertices);
+
+drawShape(gl, gl.TRIANGLES, AVertices);
 drawShape(gl, gl.TRIANGLES, LVertices);
