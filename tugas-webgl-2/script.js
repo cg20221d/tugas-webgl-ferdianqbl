@@ -23,13 +23,13 @@ gl.clear(gl.COLOR_BUFFER_BIT);
 const vertexShaderSource = `
   attribute vec2 aPosition;
   attribute vec3 aColor;
-
+  uniform mat4 uModel;
   varying vec3 vColor;
   void main() 
   {
     vColor = aColor;
     gl_PointSize = 5.0;
-    gl_Position = vec4(aPosition, 0.0, 1.0);
+    gl_Position = uModel * vec4(aPosition, 0.0, 1.0);
   }
 `;
 
@@ -57,6 +57,14 @@ const program = createProgram(gl, vertexShader, fragmentShader);
 
 gl.useProgram(program);
 
+let thetaA = 0.0;
+let thetaL = 0.0;
+let horizontalSpeed = 0.0;
+let verticalSpeed = 0.0;
+let horizontalDelta = 0.0;
+let verticalDelta = 0.0;
+
+let uModel = gl.getUniformLocation(program, "uModel");
 
 // ========= DRAW ========
 
@@ -133,7 +141,93 @@ let nolVertices = [
 drawShape(gl, gl.LINES, nolVertices);
 
 drawShape(gl, gl.LINES, twoVertices);
-// A
-drawShape(gl, gl.TRIANGLES, AVertices);
-// L
-drawShape(gl, gl.TRIANGLES, LVertices);
+
+// function render() {
+//   gl.enable(gl.DEPTH_TEST);
+//   gl.clearColor(1.0, 0.65, 0.0, 1.0);  // Oranye
+//   //            Merah     Hijau   Biru    Transparansi
+//   // if (!freeze) {
+//   //   theta += 0.1;
+//   // }
+//   // horizontalSpeed += 0.01;
+//   // verticalSpeed += 0.01;
+//   // horizontalDelta += horizontalSpeed;
+//   // verticalDelta -= verticalSpeed;
+//   var model = glMatrix.mat4.create(); // Membuat matriks identitas
+//   glMatrix.mat4.translate(
+//     model, model, [horizontalDelta, verticalDelta, 0.0]
+//   );
+//   glMatrix.mat4.rotateZ(
+//     model, model, theta
+//   );
+
+//   gl.uniformMatrix4fv(uModel, false, model);
+
+//   drawShape(gl, gl.LINES, nolVertices);
+
+//   drawShape(gl, gl.LINES, twoVertices);
+//   // A
+//   drawShape(gl, gl.TRIANGLES, AVertices);
+//   // L
+//   drawShape(gl, gl.TRIANGLES, LVertices);
+//   requestAnimationFrame(render);
+// }
+// requestAnimationFrame(render);
+
+function onKeydown(event) {
+  // Gerakan horizontal: a ke kiri, d ke kanan
+  if (event.keyCode == 65) {  // a
+    thetaA -= 0.1;
+  }
+  if (event.keyCode == 68) {   // d
+    thetaA += 0.1;
+  }
+  // Gerakan vertikal: w ke atas, s ke bawah
+  if (event.keyCode == 87) {  // w
+    thetaL += 0.1;
+  }
+  if (event.keyCode == 83) {   // s
+    thetaL -= 0.1;
+  }
+}
+// function onKeyup(event) {
+//   if (event.keyCode == 32) freeze = !freeze;
+//   if (event.keyCode == 65 || event.keyCode == 68) horizontalSpeed = 0.0;
+//   if (event.keyCode == 87 || event.keyCode == 83) verticalSpeed = 0.0;
+// }
+document.addEventListener("keydown", onKeydown);
+// document.addEventListener("keyup", onKeyup);
+
+function renderA() {
+  gl.enable(gl.DEPTH_TEST);
+  gl.clearColor(1.0, 0.65, 0.0, 1.0);
+
+  var model = glMatrix.mat4.create(); // Membuat matriks identitas
+
+  glMatrix.mat4.rotateY(
+    model, model, thetaA
+  );
+
+  gl.uniformMatrix4fv(uModel, false, model);
+
+  drawShape(gl, gl.TRIANGLES, AVertices);
+  requestAnimationFrame(renderA);
+}
+requestAnimationFrame(renderA);
+
+function renderL() {
+  gl.enable(gl.DEPTH_TEST);
+  gl.clearColor(1.0, 0.65, 0.0, 1.0);
+
+  var model = glMatrix.mat4.create(); // Membuat matriks identitas
+
+  glMatrix.mat4.rotateX(
+    model, model, thetaL
+  );
+
+  gl.uniformMatrix4fv(uModel, false, model);
+
+  drawShape(gl, gl.TRIANGLES, LVertices);
+  requestAnimationFrame(renderL);
+}
+requestAnimationFrame(renderL);
