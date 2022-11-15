@@ -57,12 +57,14 @@ const program = createProgram(gl, vertexShader, fragmentShader);
 
 gl.useProgram(program);
 
+let theta2 = 0.0;
+let theta0 = 0.0;
 let thetaA = 0.0;
 let thetaL = 0.0;
-let horizontalSpeed = 0.0;
-let verticalSpeed = 0.0;
-let horizontalDelta = 0.0;
-let verticalDelta = 0.0;
+// let horizontalSpeed = 0.0;
+// let verticalSpeed = 0.0;
+// let horizontalDelta = 0.0;
+// let verticalDelta = 0.0;
 
 let uModel = gl.getUniformLocation(program, "uModel");
 
@@ -105,9 +107,6 @@ let AVertices = [
 
 ]
 
-// draw
-// 2
-
 let twoVertices = [
   -0.5, 0.5, -0.7, 0.5,
   -0.5, 0.3, -0.5, 0.5,
@@ -138,41 +137,6 @@ let nolVertices = [
   -0.29, 0.35, -0.29 + -0.07, 0.35
 ]
 
-drawShape(gl, gl.LINES, nolVertices);
-
-drawShape(gl, gl.LINES, twoVertices);
-
-// function render() {
-//   gl.enable(gl.DEPTH_TEST);
-//   gl.clearColor(1.0, 0.65, 0.0, 1.0);  // Oranye
-//   //            Merah     Hijau   Biru    Transparansi
-//   // if (!freeze) {
-//   //   theta += 0.1;
-//   // }
-//   // horizontalSpeed += 0.01;
-//   // verticalSpeed += 0.01;
-//   // horizontalDelta += horizontalSpeed;
-//   // verticalDelta -= verticalSpeed;
-//   var model = glMatrix.mat4.create(); // Membuat matriks identitas
-//   glMatrix.mat4.translate(
-//     model, model, [horizontalDelta, verticalDelta, 0.0]
-//   );
-//   glMatrix.mat4.rotateZ(
-//     model, model, theta
-//   );
-
-//   gl.uniformMatrix4fv(uModel, false, model);
-
-//   drawShape(gl, gl.LINES, nolVertices);
-
-//   drawShape(gl, gl.LINES, twoVertices);
-//   // A
-//   drawShape(gl, gl.TRIANGLES, AVertices);
-//   // L
-//   drawShape(gl, gl.TRIANGLES, LVertices);
-//   requestAnimationFrame(render);
-// }
-// requestAnimationFrame(render);
 
 function onKeydown(event) {
   // Gerakan horizontal: a ke kiri, d ke kanan
@@ -190,13 +154,49 @@ function onKeydown(event) {
     thetaL -= 0.1;
   }
 }
-// function onKeyup(event) {
-//   if (event.keyCode == 32) freeze = !freeze;
-//   if (event.keyCode == 65 || event.keyCode == 68) horizontalSpeed = 0.0;
-//   if (event.keyCode == 87 || event.keyCode == 83) verticalSpeed = 0.0;
-// }
+
 document.addEventListener("keydown", onKeydown);
-// document.addEventListener("keyup", onKeyup);
+
+function render2() {
+  gl.enable(gl.DEPTH_TEST);
+  gl.clearColor(1.0, 0.65, 0.0, 1.0);
+
+  if (theta2 > 1.0) {
+    theta2 = -1.0;
+  }
+  if (theta2 <= 0.0) {
+    theta2 += 1.0;
+  }
+  theta2 += 0.01;
+  var model = glMatrix.mat4.create(); // Membuat matriks identitas
+
+  glMatrix.mat4.translate(
+    model, model, [theta2, 0.0, 0.0]
+  );
+
+  gl.uniformMatrix4fv(uModel, false, model);
+
+  drawShape(gl, gl.LINES, twoVertices);
+  requestAnimationFrame(render2);
+}
+requestAnimationFrame(render2);
+
+function render0() {
+  gl.enable(gl.DEPTH_TEST);
+  gl.clearColor(1.0, 0.65, 0.0, 1.0);
+  theta0 = 0.0;
+  var model = glMatrix.mat4.create(); // Membuat matriks identitas
+
+  // glMatrix.mat4.rotateY(
+  //   model, model, theta0
+  // );
+
+  gl.uniformMatrix4fv(uModel, false, model);
+
+  drawShape(gl, gl.LINES, nolVertices);
+  requestAnimationFrame(render0);
+}
+requestAnimationFrame(render0);
 
 function renderA() {
   gl.enable(gl.DEPTH_TEST);
