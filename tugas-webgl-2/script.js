@@ -61,10 +61,11 @@ let theta2 = 0.0;
 let theta0 = 0.0;
 let thetaA = 0.0;
 let thetaL = 0.0;
-// let horizontalSpeed = 0.0;
-// let verticalSpeed = 0.0;
-// let horizontalDelta = 0.0;
-// let verticalDelta = 0.0;
+let horizontalSpeed = 0.020;
+let horizontalDelta = 0.0;
+let scaleDelta = 0.0;
+let scaleSpeed = 0.01;
+let scaler = 1.05;
 
 let uModel = gl.getUniformLocation(program, "uModel");
 
@@ -161,16 +162,13 @@ function render2() {
   gl.enable(gl.DEPTH_TEST);
   gl.clearColor(1.0, 0.65, 0.0, 1.0);
 
-  if (theta2 >= 1 || theta2 <= -1) {
-    theta2 = theta2 * -0.001;
+  if (horizontalDelta >= (1.5) || horizontalDelta <= (-0.5)) {
+    horizontalSpeed = horizontalSpeed * -1;
   }
-  theta2 += 0.0020;
-
+  horizontalDelta += horizontalSpeed;
   var model = glMatrix.mat4.create(); // Membuat matriks identitas
+  glMatrix.mat4.translate(model, model, [horizontalDelta, 0.0, 0.0]);
 
-  glMatrix.mat4.translate(
-    model, model, [theta2, 0.0, 0.0]
-  );
 
   gl.uniformMatrix4fv(uModel, false, model);
 
@@ -183,13 +181,14 @@ function render0() {
   gl.enable(gl.DEPTH_TEST);
   gl.clearColor(1.0, 0.65, 0.0, 1.0);
 
-  if (theta0 >= 1 || theta0 <= -0.5) {
-    theta0 *= -1;
-  }
-  theta0 -= 0.01;
-
   var model = glMatrix.mat4.create(); // Membuat matriks identitas
-  glMatrix.mat4.scale(model, model, [theta0, theta0, theta0]);
+  if (scaleDelta >= 1 || scaleDelta <= -0.5) {
+    scaleSpeed = scaleSpeed * -1;
+  }
+  scaleDelta += scaleSpeed;
+  // glMatrix.mat4.translate(model, model, [scaleDelta, scaleDelta, scaleDelta]);
+
+  glMatrix.mat4.scale(model, model, [scaleDelta, scaleDelta, scaleDelta]);
 
   gl.uniformMatrix4fv(uModel, false, model);
 
