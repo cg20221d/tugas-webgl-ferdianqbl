@@ -162,9 +162,9 @@ function render2() {
   gl.clearColor(1.0, 0.65, 0.0, 1.0);
 
   if (theta2 >= 1 || theta2 <= -1) {
-    theta2 = theta2 * -1;
+    theta2 = theta2 * -0.001;
   }
-  theta2 += 0.01;
+  theta2 += 0.0020;
 
   var model = glMatrix.mat4.create(); // Membuat matriks identitas
 
