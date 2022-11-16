@@ -13,5 +13,3 @@ Percobaan menggunakan a dan d
 Percobaan menggunakan w dan s
 
 > Untuk tugas pada nomor 1, saya masih kebingungan untuk membuat hurufnya menjadi 3D sehingga untuk nomor - nomor yang mengharuskan object menjadi 3D terlebih dahulu belum bisa saya kerjakan juga
-
-> Untuk nomor tugas scale dan pantulan, saya masih belum menemukan rumusnya
