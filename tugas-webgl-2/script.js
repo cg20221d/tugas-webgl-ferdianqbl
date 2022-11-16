@@ -161,13 +161,11 @@ function render2() {
   gl.enable(gl.DEPTH_TEST);
   gl.clearColor(1.0, 0.65, 0.0, 1.0);
 
-  if (theta2 > 1.0) {
-    theta2 = -1.0;
-  }
-  if (theta2 <= 0.0) {
-    theta2 += 1.0;
+  if (theta2 >= 1 || theta2 <= -1) {
+    theta2 = theta2 * -1;
   }
   theta2 += 0.01;
+
   var model = glMatrix.mat4.create(); // Membuat matriks identitas
 
   glMatrix.mat4.translate(
@@ -184,12 +182,14 @@ requestAnimationFrame(render2);
 function render0() {
   gl.enable(gl.DEPTH_TEST);
   gl.clearColor(1.0, 0.65, 0.0, 1.0);
-  theta0 = 0.0;
-  var model = glMatrix.mat4.create(); // Membuat matriks identitas
 
-  // glMatrix.mat4.rotateY(
-  //   model, model, theta0
-  // );
+  if (theta0 >= 1 || theta0 <= -0.5) {
+    theta0 *= -1;
+  }
+  theta0 -= 0.01;
+
+  var model = glMatrix.mat4.create(); // Membuat matriks identitas
+  glMatrix.mat4.scale(model, model, [theta0, theta0, theta0]);
 
   gl.uniformMatrix4fv(uModel, false, model);
 
