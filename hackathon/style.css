@@ -9,10 +9,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
-canvas#my-canvas {
+canvas {
   width: 100vh;
   height: 100vh;
   /* background: #000; */

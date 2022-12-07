@@ -1,4 +1,4 @@
-# Tugas WEBGL #1 - GRAFKOM D
+# HACKATHON - GRAFKOM D
 
 - Nama : Muhammad Ferdian Iqbal
 - NRP : 5025201020
