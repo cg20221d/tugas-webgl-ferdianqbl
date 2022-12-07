@@ -116,7 +116,6 @@ var indicesKubus = [
 
 drawShape(gl, gl.TRIANGLES, verticesKubus, indicesKubus); // Draw the cube
 
-// Variabel lokal
 var theta = 0.0;
 var freeze = false;
 var horizontalSpeed = 0.0;
@@ -143,7 +142,7 @@ function onMouseClick() {
   freeze = !freeze;
 }
 document.addEventListener("click", onMouseClick);
-// Papan ketuk
+
 function onKeydown(event) {
   if (event.keyCode == 32) freeze = !freeze;  // spasi
   // Gerakan horizontal: a ke kiri, d ke kanan
