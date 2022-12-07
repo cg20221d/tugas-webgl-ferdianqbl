@@ -68,7 +68,7 @@ let uAmbientIntensity = gl.getUniformLocation(program, "uAmbientIntensity");
 
 // Untuk pencahayaan dan pembayangan
 gl.uniform3fv(uAmbientConstant, [1.0, 1.0, 1.0]);   // warna sumber cahaya: putih
-gl.uniform1f(uAmbientIntensity, 0.320);               // intensitas cahaya: 40%
+gl.uniform1f(uAmbientIntensity, 0.320);
 
 // ========= DRAW ========
 
@@ -147,9 +147,9 @@ document.addEventListener("click", onMouseClick);
 function onKeydown(event) {
   if (event.keyCode == 32) freeze = !freeze;  // spasi
   // Gerakan horizontal: a ke kiri, d ke kanan
-  if (event.keyCode == 74) {  // a
+  if (event.keyCode == 74) {  // j
     horizontalSpeed = -0.01;
-  } else if (event.keyCode == 76) {   // d
+  } else if (event.keyCode == 76) {   // l
     horizontalSpeed = 0.01;
   }
   // Gerakan vertikal: w ke atas, s ke bawah
@@ -169,7 +169,7 @@ function onKeydown(event) {
 }
 function onKeyup(event) {
   if (event.keyCode == 32) freeze = !freeze;
-  if (event.keyCode == 65 || event.keyCode == 68) horizontalSpeed = 0.0;
+  if (event.keyCode == 74 || event.keyCode == 76) horizontalSpeed = 0.0;
   if (event.keyCode == 87 || event.keyCode == 83) verticalSpeed = 0.0;
   // if (event.keyCode == 73 || event.keyCode == 75) verticalSpeed = 0.0;
 }
