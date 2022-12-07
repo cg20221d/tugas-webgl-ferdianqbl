@@ -36,12 +36,14 @@ let vertexShaderSource = `
 // create fragment shader source
 let fragmentShaderSource = `
   precision mediump float;
-
   varying vec3 vColor;
-  void main()
-  {
-    gl_FragColor = vec4(vColor, 1.0);
-  }
+  uniform vec3 uAmbientConstant;      // merepresentasikan warna sumber cahaya
+  uniform float uAmbientIntensity;    // merepresentasikan intensitas cahaya sekitar
+  void main() {
+      vec3 ambient = uAmbientConstant * uAmbientIntensity;
+      vec3 phong = ambient;
+      gl_FragColor = vec4(phong * vColor, 1.0);
+    }
 `;
 
 // create vertex shader and fragment shader
@@ -61,6 +63,12 @@ gl.useProgram(program);
 let uModel = gl.getUniformLocation(program, "uModel");
 let uView = gl.getUniformLocation(program, "uView");
 let uProjection = gl.getUniformLocation(program, "uProjection");
+let uAmbientConstant = gl.getUniformLocation(program, "uAmbientConstant");
+let uAmbientIntensity = gl.getUniformLocation(program, "uAmbientIntensity");
+
+// Untuk pencahayaan dan pembayangan
+gl.uniform3fv(uAmbientConstant, [1.0, 1.0, 1.0]);   // warna sumber cahaya: putih
+gl.uniform1f(uAmbientIntensity, 0.320);               // intensitas cahaya: 40%
 
 // ========= DRAW ========
 
@@ -115,6 +123,7 @@ var horizontalSpeed = 0.0;
 var verticalSpeed = 0.0;
 var horizontalDelta = 0.0;
 var verticalDelta = 0.0;
+var zPos = 0.0;
 var cameraX = 0.0;
 var cameraZ = 5.0;
 var view = glMatrix.mat4.create();
@@ -149,11 +158,20 @@ function onKeydown(event) {
   } else if (event.keyCode == 83) {   // s
     verticalSpeed = 0.01;
   }
+
+  // Gerakan maju: i ke depan, k ke belakang
+  if (event.keyCode == 73) {  // i
+    zPos += 0.1;
+  } else if (event.keyCode == 75) {   // k
+    zPos -= 0.1;
+  }
+
 }
 function onKeyup(event) {
   if (event.keyCode == 32) freeze = !freeze;
   if (event.keyCode == 65 || event.keyCode == 68) horizontalSpeed = 0.0;
   if (event.keyCode == 87 || event.keyCode == 83) verticalSpeed = 0.0;
+  // if (event.keyCode == 73 || event.keyCode == 75) verticalSpeed = 0.0;
 }
 document.addEventListener("keydown", onKeydown);
 document.addEventListener("keyup", onKeyup);
@@ -170,7 +188,7 @@ function render() {
   verticalDelta -= verticalSpeed;
   var model = glMatrix.mat4.create(); // Membuat matriks identitas
   glMatrix.mat4.translate(
-    model, model, [horizontalDelta, verticalDelta, 0.0]
+    model, model, [horizontalDelta, verticalDelta, zPos]
   );
   glMatrix.mat4.rotateX(
     model, model, theta
