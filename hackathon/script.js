@@ -152,12 +152,6 @@ function onKeydown(event) {
   } else if (event.keyCode == 76) {   // l
     horizontalSpeed = 0.01;
   }
-  // Gerakan vertikal: w ke atas, s ke bawah
-  if (event.keyCode == 87) {  // w
-    verticalSpeed = -0.01;
-  } else if (event.keyCode == 83) {   // s
-    verticalSpeed = 0.01;
-  }
 
   // Gerakan maju: i ke depan, k ke belakang
   if (event.keyCode == 73) {  // i
@@ -170,8 +164,6 @@ function onKeydown(event) {
 function onKeyup(event) {
   if (event.keyCode == 32) freeze = !freeze;
   if (event.keyCode == 74 || event.keyCode == 76) horizontalSpeed = 0.0;
-  if (event.keyCode == 87 || event.keyCode == 83) verticalSpeed = 0.0;
-  // if (event.keyCode == 73 || event.keyCode == 75) verticalSpeed = 0.0;
 }
 document.addEventListener("keydown", onKeydown);
 document.addEventListener("keyup", onKeyup);
