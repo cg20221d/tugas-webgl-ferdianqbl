@@ -147,9 +147,9 @@ document.addEventListener("click", onMouseClick);
 function onKeydown(event) {
   if (event.keyCode == 32) freeze = !freeze;  // spasi
   // Gerakan horizontal: a ke kiri, d ke kanan
-  if (event.keyCode == 65) {  // a
+  if (event.keyCode == 74) {  // a
     horizontalSpeed = -0.01;
-  } else if (event.keyCode == 68) {   // d
+  } else if (event.keyCode == 76) {   // d
     horizontalSpeed = 0.01;
   }
   // Gerakan vertikal: w ke atas, s ke bawah
